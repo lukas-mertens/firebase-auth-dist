@@ -1,0 +1,36 @@
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+import { Injectable } from '@angular/core';
+import { from } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { NbFirebaseBaseStrategy } from '../base/firebase-base.strategy';
+import { NbFirebaseIdentityProviderStrategyOptions } from '../base/firebase-identity-provider-strategy.options';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import * as i0 from "@angular/core";
+export class NbFirebaseAppleStrategy extends NbFirebaseBaseStrategy {
+    constructor() {
+        super(...arguments);
+        this.defaultOptions = new NbFirebaseIdentityProviderStrategyOptions();
+    }
+    static setup(options) {
+        return [NbFirebaseAppleStrategy, options];
+    }
+    authenticate(data) {
+        const module = 'authenticate';
+        const provider = new firebase.auth.OAuthProvider('apple.com');
+        const scopes = this.getOption('scopes');
+        scopes.forEach((scope) => provider.addScope(scope));
+        provider.setCustomParameters(this.getOption('customParameters'));
+        return from(this.afAuth.signInWithPopup(provider)).pipe(switchMap((res) => this.processSuccess(res, module)), catchError((error) => this.processFailure(error, module)));
+    }
+}
+NbFirebaseAppleStrategy.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: NbFirebaseAppleStrategy, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+NbFirebaseAppleStrategy.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: NbFirebaseAppleStrategy });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: NbFirebaseAppleStrategy, decorators: [{
+            type: Injectable
+        }] });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZmlyZWJhc2UtYXBwbGUuc3RyYXRlZ3kuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi9zcmMvZnJhbWV3b3JrL2ZpcmViYXNlLWF1dGgvc3RyYXRlZ2llcy9hcHBsZS9maXJlYmFzZS1hcHBsZS5zdHJhdGVneS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7OztHQUlHO0FBRUgsT0FBTyxFQUFFLFVBQVUsRUFBRSxNQUFNLGVBQWUsQ0FBQztBQUMzQyxPQUFPLEVBQUUsSUFBSSxFQUFjLE1BQU0sTUFBTSxDQUFDO0FBQ3hDLE9BQU8sRUFBRSxVQUFVLEVBQUUsU0FBUyxFQUFFLE1BQU0sZ0JBQWdCLENBQUM7QUFHdkQsT0FBTyxFQUFFLHNCQUFzQixFQUFFLE1BQU0sZ0NBQWdDLENBQUM7QUFDeEUsT0FBTyxFQUFFLHlDQUF5QyxFQUFFLE1BQU0scURBQXFELENBQUM7QUFFaEgsT0FBTyxRQUFRLE1BQU0scUJBQXFCLENBQUM7QUFDM0MsT0FBTyxzQkFBc0IsQ0FBQzs7QUFHOUIsTUFBTSxPQUFPLHVCQUF3QixTQUFRLHNCQUFzQjtJQURuRTs7UUFFWSxtQkFBYyxHQUE4QyxJQUFJLHlDQUF5QyxFQUFFLENBQUM7S0FrQnZIO0lBaEJDLE1BQU0sQ0FBQyxLQUFLLENBQUMsT0FBa0Q7UUFDN0QsT0FBTyxDQUFDLHVCQUF1QixFQUFFLE9BQU8sQ0FBQyxDQUFDO0lBQzVDLENBQUM7SUFFRCxZQUFZLENBQUMsSUFBVTtRQUNyQixNQUFNLE1BQU0sR0FBRyxjQUFjLENBQUM7UUFDOUIsTUFBTSxRQUFRLEdBQUcsSUFBSSxRQUFRLENBQUMsSUFBSSxDQUFDLGFBQWEsQ0FBQyxXQUFXLENBQUMsQ0FBQztRQUM5RCxNQUFNLE1BQU0sR0FBRyxJQUFJLENBQUMsU0FBUyxDQUFDLFFBQVEsQ0FBQyxDQUFDO1FBQ3hDLE1BQU0sQ0FBQyxPQUFPLENBQUMsQ0FBQyxLQUFLLEVBQUUsRUFBRSxDQUFDLFFBQVEsQ0FBQyxRQUFRLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQztRQUNwRCxRQUFRLENBQUMsbUJBQW1CLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxrQkFBa0IsQ0FBQyxDQUFDLENBQUM7UUFFakUsT0FBTyxJQUFJLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxlQUFlLENBQUMsUUFBUSxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQ3JELFNBQVMsQ0FBQyxDQUFDLEdBQUcsRUFBRSxFQUFFLENBQUMsSUFBSSxDQUFDLGNBQWMsQ0FBQyxHQUFHLEVBQUUsTUFBTSxDQUFDLENBQUMsRUFDcEQsVUFBVSxDQUFDLENBQUMsS0FBSyxFQUFFLEVBQUUsQ0FBQyxJQUFJLENBQUMsY0FBYyxDQUFDLEtBQUssRUFBRSxNQUFNLENBQUMsQ0FBQyxDQUMxRCxDQUFDO0lBQ0osQ0FBQzs7b0hBbEJVLHVCQUF1Qjt3SEFBdkIsdUJBQXVCOzJGQUF2Qix1QkFBdUI7a0JBRG5DLFVBQVUiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIEBsaWNlbnNlXG4gKiBDb3B5cmlnaHQgQWt2ZW8uIEFsbCBSaWdodHMgUmVzZXJ2ZWQuXG4gKiBMaWNlbnNlZCB1bmRlciB0aGUgTUlUIExpY2Vuc2UuIFNlZSBMaWNlbnNlLnR4dCBpbiB0aGUgcHJvamVjdCByb290IGZvciBsaWNlbnNlIGluZm9ybWF0aW9uLlxuICovXG5cbmltcG9ydCB7IEluamVjdGFibGUgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7IGZyb20sIE9ic2VydmFibGUgfSBmcm9tICdyeGpzJztcbmltcG9ydCB7IGNhdGNoRXJyb3IsIHN3aXRjaE1hcCB9IGZyb20gJ3J4anMvb3BlcmF0b3JzJztcbmltcG9ydCB7IE5iQXV0aFN0cmF0ZWd5Q2xhc3MsIE5iQXV0aFJlc3VsdCwgTmJBdXRoU3RyYXRlZ3lPcHRpb25zIH0gZnJvbSAnQG5lYnVsYXIvYXV0aCc7XG5cbmltcG9ydCB7IE5iRmlyZWJhc2VCYXNlU3RyYXRlZ3kgfSBmcm9tICcuLi9iYXNlL2ZpcmViYXNlLWJhc2Uuc3RyYXRlZ3knO1xuaW1wb3J0IHsgTmJGaXJlYmFzZUlkZW50aXR5UHJvdmlkZXJTdHJhdGVneU9wdGlvbnMgfSBmcm9tICcuLi9iYXNlL2ZpcmViYXNlLWlkZW50aXR5LXByb3ZpZGVyLXN0cmF0ZWd5Lm9wdGlvbnMnO1xuXG5pbXBvcnQgZmlyZWJhc2UgZnJvbSAnZmlyZWJhc2UvY29tcGF0L2FwcCc7XG5pbXBvcnQgJ2ZpcmViYXNlL2NvbXBhdC9hdXRoJztcblxuQEluamVjdGFibGUoKVxuZXhwb3J0IGNsYXNzIE5iRmlyZWJhc2VBcHBsZVN0cmF0ZWd5IGV4dGVuZHMgTmJGaXJlYmFzZUJhc2VTdHJhdGVneSB7XG4gIHByb3RlY3RlZCBkZWZhdWx0T3B0aW9uczogTmJGaXJlYmFzZUlkZW50aXR5UHJvdmlkZXJTdHJhdGVneU9wdGlvbnMgPSBuZXcgTmJGaXJlYmFzZUlkZW50aXR5UHJvdmlkZXJTdHJhdGVneU9wdGlvbnMoKTtcblxuICBzdGF0aWMgc2V0dXAob3B0aW9uczogTmJGaXJlYmFzZUlkZW50aXR5UHJvdmlkZXJTdHJhdGVneU9wdGlvbnMpOiBbTmJBdXRoU3RyYXRlZ3lDbGFzcywgTmJBdXRoU3RyYXRlZ3lPcHRpb25zXSB7XG4gICAgcmV0dXJuIFtOYkZpcmViYXNlQXBwbGVTdHJhdGVneSwgb3B0aW9uc107XG4gIH1cblxuICBhdXRoZW50aWNhdGUoZGF0YT86IGFueSk6IE9ic2VydmFibGU8TmJBdXRoUmVzdWx0PiB7XG4gICAgY29uc3QgbW9kdWxlID0gJ2F1dGhlbnRpY2F0ZSc7XG4gICAgY29uc3QgcHJvdmlkZXIgPSBuZXcgZmlyZWJhc2UuYXV0aC5PQXV0aFByb3ZpZGVyKCdhcHBsZS5jb20nKTtcbiAgICBjb25zdCBzY29wZXMgPSB0aGlzLmdldE9wdGlvbignc2NvcGVzJyk7XG4gICAgc2NvcGVzLmZvckVhY2goKHNjb3BlKSA9PiBwcm92aWRlci5hZGRTY29wZShzY29wZSkpO1xuICAgIHByb3ZpZGVyLnNldEN1c3RvbVBhcmFtZXRlcnModGhpcy5nZXRPcHRpb24oJ2N1c3RvbVBhcmFtZXRlcnMnKSk7XG5cbiAgICByZXR1cm4gZnJvbSh0aGlzLmFmQXV0aC5zaWduSW5XaXRoUG9wdXAocHJvdmlkZXIpKS5waXBlKFxuICAgICAgc3dpdGNoTWFwKChyZXMpID0+IHRoaXMucHJvY2Vzc1N1Y2Nlc3MocmVzLCBtb2R1bGUpKSxcbiAgICAgIGNhdGNoRXJyb3IoKGVycm9yKSA9PiB0aGlzLnByb2Nlc3NGYWlsdXJlKGVycm9yLCBtb2R1bGUpKSxcbiAgICApO1xuICB9XG59XG4iXX0=
