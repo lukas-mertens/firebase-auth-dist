@@ -266,6 +266,34 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImpor
  * Copyright Akveo. All Rights Reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
+class NbFirebaseAppleStrategy extends NbFirebaseBaseStrategy {
+    constructor() {
+        super(...arguments);
+        this.defaultOptions = new NbFirebaseIdentityProviderStrategyOptions();
+    }
+    static setup(options) {
+        return [NbFirebaseAppleStrategy, options];
+    }
+    authenticate(data) {
+        const module = 'authenticate';
+        const provider = new firebase.auth.OAuthProvider('apple.com');
+        const scopes = this.getOption('scopes');
+        scopes.forEach((scope) => provider.addScope(scope));
+        provider.setCustomParameters(this.getOption('customParameters'));
+        return from(this.afAuth.signInWithPopup(provider)).pipe(switchMap((res) => this.processSuccess(res, module)), catchError((error) => this.processFailure(error, module)));
+    }
+}
+NbFirebaseAppleStrategy.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: NbFirebaseAppleStrategy, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+NbFirebaseAppleStrategy.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: NbFirebaseAppleStrategy });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: NbFirebaseAppleStrategy, decorators: [{
+            type: Injectable
+        }] });
+
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
 class NbFirebaseFacebookStrategy extends NbFirebaseBaseStrategy {
     constructor() {
         super(...arguments);
@@ -315,34 +343,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImpor
             type: Injectable
         }] });
 
-/**
- * @license
- * Copyright Akveo. All Rights Reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- */
-class NbFirebaseAppleStrategy extends NbFirebaseBaseStrategy {
-    constructor() {
-        super(...arguments);
-        this.defaultOptions = new NbFirebaseIdentityProviderStrategyOptions();
-    }
-    static setup(options) {
-        return [NbFirebaseAppleStrategy, options];
-    }
-    authenticate(data) {
-        const module = 'authenticate';
-        const provider = new firebase.auth.OAuthProvider('apple.com');
-        const scopes = this.getOption('scopes');
-        scopes.forEach((scope) => provider.addScope(scope));
-        provider.setCustomParameters(this.getOption('customParameters'));
-        return from(this.afAuth.signInWithPopup(provider)).pipe(switchMap((res) => this.processSuccess(res, module)), catchError((error) => this.processFailure(error, module)));
-    }
-}
-NbFirebaseAppleStrategy.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: NbFirebaseAppleStrategy, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
-NbFirebaseAppleStrategy.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: NbFirebaseAppleStrategy });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: NbFirebaseAppleStrategy, decorators: [{
-            type: Injectable
-        }] });
-
 /*
  * @license
  * Copyright Akveo. All Rights Reserved.
@@ -382,4 +382,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { NbFirebaseAuthModule, NbFirebaseBaseStrategy, NbFirebaseFacebookStrategy, NbFirebaseGoogleStrategy, NbFirebaseIdentityProviderStrategyOptions, NbFirebasePasswordStrategy, NbFirebasePasswordStrategyOptions, NbFirebaseTwitteStrategy, firebasePasswordStrategyOptions };
+export { NbFirebaseAppleStrategy, NbFirebaseAuthModule, NbFirebaseBaseStrategy, NbFirebaseFacebookStrategy, NbFirebaseGoogleStrategy, NbFirebaseIdentityProviderStrategyOptions, NbFirebasePasswordStrategy, NbFirebasePasswordStrategyOptions, NbFirebaseTwitteStrategy, firebasePasswordStrategyOptions };
+//# sourceMappingURL=nebular-firebase-auth.mjs.map
